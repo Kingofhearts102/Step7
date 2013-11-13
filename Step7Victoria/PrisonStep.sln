@@ -1,0 +1,42 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PrisonStep", "PrisonStep\PrisonStep.csproj", "{15352C9A-B094-4C85-BB75-06D626C46997}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PrisonStepContent", "PrisonStepContent\PrisonStepContent.contentproj", "{5A089D4C-D26B-4C7D-B622-D4CD51844421}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XnaAux", "XnaAux\XnaAux.csproj", "{F2F7FA8C-1FC7-42CC-93D8-E5DFF48AC09B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AnimationPipeline", "AnimationPipeline\AnimationPipeline.csproj", "{FF2FBE94-50B5-4E78-9592-B95F32A8881E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DebugPipeline", "DebugPipeline\DebugPipeline.csproj", "{95110D40-3DBA-463E-8CF8-C7B08782055A}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x86 = Debug|x86
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{15352C9A-B094-4C85-BB75-06D626C46997}.Debug|x86.ActiveCfg = Debug|x86
+		{15352C9A-B094-4C85-BB75-06D626C46997}.Debug|x86.Build.0 = Debug|x86
+		{15352C9A-B094-4C85-BB75-06D626C46997}.Release|x86.ActiveCfg = Release|x86
+		{15352C9A-B094-4C85-BB75-06D626C46997}.Release|x86.Build.0 = Release|x86
+		{5A089D4C-D26B-4C7D-B622-D4CD51844421}.Debug|x86.ActiveCfg = Debug|x86
+		{5A089D4C-D26B-4C7D-B622-D4CD51844421}.Release|x86.ActiveCfg = Release|x86
+		{F2F7FA8C-1FC7-42CC-93D8-E5DFF48AC09B}.Debug|x86.ActiveCfg = Debug|x86
+		{F2F7FA8C-1FC7-42CC-93D8-E5DFF48AC09B}.Debug|x86.Build.0 = Debug|x86
+		{F2F7FA8C-1FC7-42CC-93D8-E5DFF48AC09B}.Release|x86.ActiveCfg = Release|x86
+		{F2F7FA8C-1FC7-42CC-93D8-E5DFF48AC09B}.Release|x86.Build.0 = Release|x86
+		{FF2FBE94-50B5-4E78-9592-B95F32A8881E}.Debug|x86.ActiveCfg = Debug|x86
+		{FF2FBE94-50B5-4E78-9592-B95F32A8881E}.Debug|x86.Build.0 = Debug|x86
+		{FF2FBE94-50B5-4E78-9592-B95F32A8881E}.Release|x86.ActiveCfg = Debug|x86
+		{FF2FBE94-50B5-4E78-9592-B95F32A8881E}.Release|x86.Build.0 = Debug|x86
+		{95110D40-3DBA-463E-8CF8-C7B08782055A}.Debug|x86.ActiveCfg = Debug|x86
+		{95110D40-3DBA-463E-8CF8-C7B08782055A}.Debug|x86.Build.0 = Debug|x86
+		{95110D40-3DBA-463E-8CF8-C7B08782055A}.Release|x86.ActiveCfg = Release|x86
+		{95110D40-3DBA-463E-8CF8-C7B08782055A}.Release|x86.Build.0 = Release|x86
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
