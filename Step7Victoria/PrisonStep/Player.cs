@@ -40,13 +40,17 @@ namespace PrisonStep
         /// Player location in the prison. Only x/z are important. y still stay zero
         /// unless we add some flying or jumping behavior later on.
         /// </summary>
-        private Vector3 location = new Vector3(0, 0, 600); //new Vector3(275, 0, 1053);
+        private Vector3 location = new Vector3(275, 0, 1053); //new Vector3(275, 0, 1053);
 
         /// <summary>
         /// The player orientation as a simple angle
         /// </summary>
-        private float orientation = 3.14f; // 1.6f;
+        private float orientation = 1.6f; // 1.6f;
 
+
+
+        private enum States { Start, StanceStart, Stance, WalkStart, WalkLoopStart, WalkLoop }
+        private States state = States.Start;
         
         
         /// <summary>
@@ -86,6 +90,12 @@ namespace PrisonStep
             this.game = game;
             victoria = new AnimatedModel(game, "Victoria");
             victoria.AddAssetClip("dance", "Victoria-dance");
+            victoria.AddAssetClip("stance", "Victoria-stance");
+            victoria.AddAssetClip("walk", "Victoria-walk");
+            victoria.AddAssetClip("walkstart", "Victoria-walkstart");
+            victoria.AddAssetClip("walkloop", "Victoria-walkloop");
+            victoria.AddAssetClip("rightturn", "Victoria-rightturn");
+            victoria.AddAssetClip("leftturn", "Victoria-leftturn");
             SetPlayerTransform();
         }
 
@@ -155,7 +165,7 @@ namespace PrisonStep
                 regions[mesh.Name] = triangles;
             }
 
-            AnimationPlayer player = victoria.PlayClip("dance");
+            AnimationPlayer player = victoria.PlayClip("walk");
         }
 
         private string TestRegion(Vector3 v3)
@@ -203,10 +213,29 @@ namespace PrisonStep
         {
             float delta = (float)gameTime.ElapsedGameTime.TotalSeconds;
 
-            // How much we will move the player
+            switch (state)
+            {
+                case States.Start:
+                    state = States.StanceStart;
+                    delta = 0;
+                    break;
+
+                case States.StanceStart:
+                    victoria.PlayClip("stance");
+                    state = States.Stance;
+                    break;
+
+                case States.Stance:
+                    break;
+            }
+
+            victoria.Update(gameTime.ElapsedGameTime.TotalSeconds);
+
             float translation = 0;
             float rotation = 0;
-            
+
+
+
             KeyboardState keyboardState = Keyboard.GetState();
 
             if (keyboardState.IsKeyDown(Keys.Left))
@@ -230,6 +259,42 @@ namespace PrisonStep
             {
                 translation -= moveRate * delta;
             }
+            //
+            // Part 1:  Compute a new orientation
+            //
+            orientation += rotation;
+
+            Matrix deltaMatrix = victoria.DeltaMatrix;
+            float deltaAngle = (float)Math.Atan2(deltaMatrix.Backward.X, deltaMatrix.Backward.Z);
+            float newOrientation = orientation + deltaAngle;
+
+            //
+            // Part 2:  Compute a new location
+            //
+            Vector3 translateVector = new Vector3((float)Math.Sin(orientation), 0, (float)Math.Cos(orientation));
+            translateVector *= translation;
+           location =  location + translateVector;
+
+
+            // We are likely rotated from the angle the model expects to be in
+            // Determine that angle.
+            Matrix rootMatrix = victoria.RootMatrix;
+            float actualAngle = (float)Math.Atan2(rootMatrix.Backward.X, rootMatrix.Backward.Z);
+            Vector3 newLocation = location + Vector3.TransformNormal(victoria.DeltaPosition,
+                               Matrix.CreateRotationY(newOrientation - actualAngle));
+
+            //
+            // I'm just taking these here.  You'll likely want to add something 
+            // for collision detection instead.
+            //
+
+            location = newLocation;
+            orientation = newOrientation;
+            SetPlayerTransform();
+         /*   // How much we will move the player
+
+            
+            
 
             GamePadState gamePadState = GamePad.GetState(PlayerIndex.One);
             rotation += -gamePadState.ThumbSticks.Right.X * panRate * delta;
@@ -239,9 +304,9 @@ namespace PrisonStep
             // Update the orientation
             //
 
-            victoria.Update(gameTime);
+            
 
-            orientation += rotation;
+
 
             //
             // Update the location
@@ -323,11 +388,11 @@ namespace PrisonStep
             // Make the camera follow the player
             //
 
-            game.Camera.Eye = location + new Vector3(0, 180, 0);
-            game.Camera.Center = game.Camera.Eye + transform.Backward + new Vector3(0, -0.1f, 0);
+           // game.Camera.Eye = location + new Vector3(0, 180, 0);
+            //game.Camera.Center = game.Camera.Eye + transform.Backward + new Vector3(0, -0.1f, 0);
 
             // Retain the game pad state
-            lastGPS = gamePadState;
+            lastGPS = gamePadState; */
         }
 
 
@@ -338,7 +403,10 @@ namespace PrisonStep
         /// <param name="gameTime"></param>
         public void Draw(GraphicsDeviceManager graphics, GameTime gameTime)
         {
-            victoria.Draw(graphics, gameTime);
+            Matrix transform = Matrix.CreateRotationY(orientation);
+            transform.Translation = location;
+
+            victoria.Draw(graphics, gameTime, transform);
         }
 
         /// <summary>

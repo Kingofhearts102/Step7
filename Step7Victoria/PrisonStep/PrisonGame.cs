@@ -94,6 +94,8 @@ namespace PrisonStep
             // Basic camera settings
             camera = new Camera(graphics);
             camera.FieldOfView = MathHelper.ToRadians(42);
+            camera.Eye = new Vector3(800, 180, 1053);
+            camera.Center = new Vector3(275, 90, 1053);
 
             lineDraw = new PSLineDraw(this, Camera);
             this.Components.Add(lineDraw);

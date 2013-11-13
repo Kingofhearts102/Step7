@@ -170,6 +170,44 @@
       <ProcessorParameters_Skinned>True</ProcessorParameters_Skinned>
     </Compile>
   </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Victoria-leftturn.FBX">
+      <Name>Victoria-leftturn</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>AnimationProcessor</Processor>
+      <ProcessorParameters_Skinned>True</ProcessorParameters_Skinned>
+    </Compile>
+    <Compile Include="Victoria-rightturn.FBX">
+      <Name>Victoria-rightturn</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>AnimationProcessor</Processor>
+      <ProcessorParameters_Skinned>True</ProcessorParameters_Skinned>
+    </Compile>
+    <Compile Include="Victoria-stance.FBX">
+      <Name>Victoria-stance</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>AnimationProcessor</Processor>
+      <ProcessorParameters_Skinned>True</ProcessorParameters_Skinned>
+    </Compile>
+    <Compile Include="Victoria-walk.FBX">
+      <Name>Victoria-walk</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>AnimationProcessor</Processor>
+      <ProcessorParameters_Skinned>True</ProcessorParameters_Skinned>
+    </Compile>
+    <Compile Include="Victoria-walkloop.FBX">
+      <Name>Victoria-walkloop</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>AnimationProcessor</Processor>
+      <ProcessorParameters_Skinned>True</ProcessorParameters_Skinned>
+    </Compile>
+    <Compile Include="Victoria-walkstart.FBX">
+      <Name>Victoria-walkstart</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>AnimationProcessor</Processor>
+      <ProcessorParameters_Skinned>True</ProcessorParameters_Skinned>
+    </Compile>
+  </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\$(XnaFrameworkVersion)\Microsoft.Xna.GameStudio.ContentPipeline.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

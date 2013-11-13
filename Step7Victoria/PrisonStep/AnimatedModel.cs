@@ -21,6 +21,13 @@ namespace PrisonStep
         public const int NumSkinBones = 57;
 
 
+        private Matrix rootMatrixRaw = Matrix.Identity;
+        private Matrix deltaMatrix = Matrix.Identity;
+
+        public Matrix DeltaMatrix { get { return deltaMatrix; } }
+        public Vector3 DeltaPosition;
+        public Matrix RootMatrix { get { return inverseBindTransforms[skelToBone[0]] * rootMatrixRaw; } }
+
         /// <summary>
         /// This class describes a single animation clip we load from
         /// an asset.
@@ -147,6 +154,7 @@ namespace PrisonStep
             if (name != "Take 001")
             {
                 player = new AnimationPlayer(this, assetClips[name].TheClip);
+                Update(0);
                 return player;
             }
             player = null;
@@ -160,9 +168,9 @@ namespace PrisonStep
             return player;
         }
 
-        public void Update(GameTime gameTime)
+        public void Update(double delta)
         {
-            double delta = gameTime.ElapsedGameTime.TotalSeconds;
+            
 
             if (clip != null)
             {
@@ -183,7 +191,16 @@ namespace PrisonStep
                         Matrix.CreateFromQuaternion(bone.Rotation) *
                         Matrix.CreateTranslation(bone.Translation);
                 }
+                if (skelToBone != null)
+                {
+                    int rootBone = skelToBone[0];
 
+                    deltaMatrix = Matrix.Invert(rootMatrixRaw) * bonesTransforms[rootBone];
+                    DeltaPosition = bonesTransforms[rootBone].Translation - rootMatrixRaw.Translation;
+
+                    rootMatrixRaw = bonesTransforms[rootBone];
+                    bonesTransforms[rootBone] = bindTransforms[rootBone];
+                }
                 model.CopyBoneTransformsFrom(bonesTransforms);
             }
             bonesTransforms[9] = Matrix.CreateRotationX(0.8f) * bindTransforms[9];
@@ -192,9 +209,14 @@ namespace PrisonStep
             model.CopyAbsoluteBoneTransformsTo(absoTransforms);
         }
 
-        public void Draw(GraphicsDeviceManager graphics, GameTime gameTime)
+        /// <summary>
+        /// This function is called to draw this game component.
+        /// </summary>
+        /// <param name="graphics">Device to draw the model on.</param>
+        /// <param name="gameTime">Current game time.</param>
+        /// <param name="transform">Transform that puts the model where we want it.</param>
+        public void Draw(GraphicsDeviceManager graphics, GameTime gameTime, Matrix transform)
         {
-            Matrix transform = Matrix.Identity;
             DrawModel(graphics, model, transform);
         }
 
