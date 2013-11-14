@@ -273,54 +273,24 @@ namespace PrisonStep
             //
             Vector3 translateVector = new Vector3((float)Math.Sin(orientation), 0, (float)Math.Cos(orientation));
             translateVector *= translation;
-           location =  location + translateVector;
+            //location =  location + translateVector;
 
 
             // We are likely rotated from the angle the model expects to be in
             // Determine that angle.
             Matrix rootMatrix = victoria.RootMatrix;
             float actualAngle = (float)Math.Atan2(rootMatrix.Backward.X, rootMatrix.Backward.Z);
-            Vector3 newLocation = location + Vector3.TransformNormal(victoria.DeltaPosition,
+            Vector3 newLocation = location  + translateVector+ Vector3.TransformNormal(victoria.DeltaPosition,
                                Matrix.CreateRotationY(newOrientation - actualAngle));
 
             //
             // I'm just taking these here.  You'll likely want to add something 
             // for collision detection instead.
             //
-
-            location = newLocation;
-            orientation = newOrientation;
-            SetPlayerTransform();
-         /*   // How much we will move the player
-
-            
-            
-
-            GamePadState gamePadState = GamePad.GetState(PlayerIndex.One);
-            rotation += -gamePadState.ThumbSticks.Right.X * panRate * delta;
-            translation += gamePadState.ThumbSticks.Right.Y * moveRate * delta;
-
-            //
-            // Update the orientation
-            //
-
-            
-
-
-
-            //
-            // Update the location
-            //
-
-            Vector3 translateVector = new Vector3((float)Math.Sin(orientation), 0, (float)Math.Cos(orientation));
-            translateVector *= translation;
-
-            Vector3 newLocation = location + translateVector;
-
             bool collision = false;     // Until we know otherwise
 
             string region = TestRegion(newLocation);
-            
+            Console.WriteLine(region);
             // Slimed support
             if (!game.Slimed && region == "R_Section6")
             {
@@ -380,19 +350,122 @@ namespace PrisonStep
             if (!collision)
             {
                 location = newLocation;
+                orientation = newOrientation;
+                SetPlayerTransform();
             }
+            //location = newLocation;
+            orientation = newOrientation;
 
-            SetPlayerTransform();
+            Matrix rotationMatrix = Matrix.CreateRotationY(orientation);
 
-            //
-            // Make the camera follow the player
-            //
+            Vector3 transformedReference = Vector3.Transform(new Vector3(0,250,-200), rotationMatrix);
 
-           // game.Camera.Eye = location + new Vector3(0, 180, 0);
-            //game.Camera.Center = game.Camera.Eye + transform.Backward + new Vector3(0, -0.1f, 0);
+            Vector3 cameraPosition = transformedReference + location;
 
-            // Retain the game pad state
-            lastGPS = gamePadState; */
+            game.Camera.Eye = cameraPosition; // location + transform.Backward + new Vector3(0, 180, -150);
+            game.Camera.Center = game.Camera.Eye + transform.Backward + new Vector3(0, -0.6f, 0);
+            /*   // How much we will move the player
+
+            
+            
+
+               GamePadState gamePadState = GamePad.GetState(PlayerIndex.One);
+               rotation += -gamePadState.ThumbSticks.Right.X * panRate * delta;
+               translation += gamePadState.ThumbSticks.Right.Y * moveRate * delta;
+
+               //
+               // Update the orientation
+               //
+
+            
+
+
+
+               //
+               // Update the location
+               //
+
+               Vector3 translateVector = new Vector3((float)Math.Sin(orientation), 0, (float)Math.Cos(orientation));
+               translateVector *= translation;
+
+               Vector3 newLocation = location + translateVector;
+
+               bool collision = false;     // Until we know otherwise
+
+               string region = TestRegion(newLocation);
+            
+               // Slimed support
+               if (!game.Slimed && region == "R_Section6")
+               {
+                   game.Slimed = true;
+               }
+               else if (game.Slimed && region == "R_Section1")
+               {
+                   game.Slimed = false;
+               }
+
+               if (region == "")
+               {
+                   // If not in a region, we have stepped out of bounds
+                   collision = true;
+               }
+               else if (region.StartsWith("R_Door"))   // Are we in a door region
+               {
+                   // What is the door number for the region we are in?
+                   int dnum = int.Parse(region.Substring(6));
+
+                   // Are we currently facing the door or walking through a 
+                   // door?
+
+                   bool underDoor;
+                   if (DoorShouldBeOpen(dnum, location, transform.Backward, out underDoor))
+                   {
+                       SetOpenDoor(dnum);
+                   }
+                   else
+                   {
+                       SetOpenDoor(0);
+                   }
+
+                   if (underDoor)
+                   {
+                       // is the door actually open right now?
+                       bool isOpen = false;
+                       foreach (PrisonModel model in game.PhibesModels)
+                       {
+                           if (model.DoorIsOpen(dnum))
+                           {
+                               isOpen = true;
+                               break;
+                           }
+                       }
+
+                       if (!isOpen)
+                           collision = true;
+                   }
+               }
+               else if (openDoor > 0)
+               {
+                   // Indicate none are open
+                   SetOpenDoor(0);
+               }
+
+               if (!collision)
+               {
+                   location = newLocation;
+               }
+
+               SetPlayerTransform();
+
+               //
+               // Make the camera follow the player
+               //
+
+                 game.Camera.Eye = location + new Vector3(0, 180, 0);
+                 game.Camera.Center = game.Camera.Eye + transform.Backward + new Vector3(0, -0.1f, 0);
+
+               // Retain the game pad state
+               lastGPS = gamePadState; */
         }
 
 

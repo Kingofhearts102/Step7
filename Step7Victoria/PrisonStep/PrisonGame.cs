@@ -151,14 +151,6 @@ namespace PrisonStep
                 Keyboard.GetState().IsKeyDown(Keys.Escape))
                 this.Exit();
 
-            lineDraw.Clear();
-            lineDraw.Crosshair(new Vector3(0, 100, 0), 20, Color.White);
-
-            lineDraw.Begin();
-            lineDraw.Vertex(new Vector3(0, 150, 0), Color.White);
-            lineDraw.Vertex(new Vector3(50, 100, 0), Color.Red);
-            lineDraw.End();
-
             //
             // Update game components
             //

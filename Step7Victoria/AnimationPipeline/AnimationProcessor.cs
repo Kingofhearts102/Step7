@@ -304,7 +304,7 @@ namespace AnimationPipeline
                     if (!bones.TryGetValue(channel.Key, out boneIndex))
                         continue;           // Ignore if not a named bone
 
-                    if (UselessAnimationTest(boneIndex))
+                    if ( !skinned && UselessAnimationTest(boneIndex))
                         continue;
 
                     foreach (AnimationKeyframe keyframe in channel.Value)

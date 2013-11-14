@@ -130,6 +130,7 @@ namespace PrisonStep
         /// <param name="gameTime"></param>
         public void Update(GameTime gameTime)
         {
+            ComputeView();
             // Currently does not do anything. Provided in case we
             // add camera animation at a future point in time.
         }
