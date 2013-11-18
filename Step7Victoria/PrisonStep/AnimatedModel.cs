@@ -81,6 +81,11 @@ namespace PrisonStep
 
         private AnimationClips.Clip clip = null;
 
+        /// <summary>
+        /// Access the current animation player
+        /// </summary>
+        public AnimationPlayer Player { get { return player; } }
+
         public AnimatedModel(PrisonGame game, string asset)
         {
             this.game = game;
@@ -157,6 +162,7 @@ namespace PrisonStep
                 Update(0);
                 return player;
             }
+            ;
             player = null;
 
             AnimationClips clips = model.Tag as AnimationClips;
@@ -164,7 +170,7 @@ namespace PrisonStep
             {
                 player = new AnimationPlayer(this, clips.Clips[name]);
             }
-
+            Update(0);
             return player;
         }
 

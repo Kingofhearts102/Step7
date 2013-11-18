@@ -54,7 +54,9 @@ namespace PrisonStep
 		private bool looping = true;
 		private double speed = 1.0f;
 
-		private double time = 0;
+        private double time = 0;
+
+
 
 		private BoneInfo[] boneInfos;
 		private int boneCnt;
@@ -65,10 +67,21 @@ namespace PrisonStep
 
 		#region Properties
 
+
+        public double Time
+        {
+            get { return time; }
+            set { time = value; }
+        }
 		/// <summary>
 		/// Indicates if the playback should "loop" or not.
 		/// </summary>
 		public bool Looping { get { return looping; } set { looping = value; } }
+
+        /// <summary>
+        /// Get the clip being played by this player
+        /// </summary>
+        public AnimationClips.Clip Clip { get { return clip; } }
 
 		/// <summary>
 		/// Playback speed
@@ -120,7 +133,7 @@ namespace PrisonStep
 		public void Update(double delta)
 		{
 			time += delta;
-            if (looping && time >= clip.Duration)
+            /*if (looping && time >= clip.Duration)
             {
                 time -= clip.Duration;
                 for (int b = 0; b < boneCnt; b++)
@@ -128,7 +141,7 @@ namespace PrisonStep
                     boneInfos[b].CurrentKeyframe = -1;
                     boneInfos[b].Valid = false;
                 }
-            }
+            }*/
 
 			for (int b = 0; b < boneInfos.Length; b++)
 			{

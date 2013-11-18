@@ -12,14 +12,14 @@ float3 Light2Color = float3(14.29, 45, 43.94);
 float3 Light3Location = float3(824, 231, 765);
 float3 Light3Color = float3(82.5, 0, 0);
 
-float3 Gain = float3(1, 1, 1);
-
-texture Texture;
-
 // Maximum number of bone matrices we can render using shader 2.0 in a single pass.
 // If you change this, update SkinnedModelProcessor.cs to match.
 #define MaxBones 57
 float4x4 Bones[MaxBones];
+
+float Slime = 1;
+
+texture Texture;
 
 sampler Sampler = sampler_state
 {
@@ -47,14 +47,12 @@ struct VertexShaderOutput
     float4 Position : POSITION0;
 	float4 Color : COLOR0;
 	float2 TexCoord : TEXCOORD0;
+	float4 Pos1 : TEXCOORD1;
 };
 
 VertexShaderOutput VertexShaderFunction(VertexShaderInput input)
 {
-    VertexShaderOutput output;
-	output.TexCoord = input.TexCoord;
-
-	// Blend between the weighted bone matrices.
+    // Blend between the weighted bone matrices.
     float4x4 skinTransform = 0;
     
     skinTransform += Bones[input.BoneIndices.x] * input.BoneWeights.x;
@@ -62,7 +60,10 @@ VertexShaderOutput VertexShaderFunction(VertexShaderInput input)
     skinTransform += Bones[input.BoneIndices.z] * input.BoneWeights.z;
     skinTransform += Bones[input.BoneIndices.w] * input.BoneWeights.w;
 
-	float4 worldPosition = mul(mul(input.Position, skinTransform), World);
+    VertexShaderOutput output;
+	output.TexCoord = input.TexCoord;
+
+    float4 worldPosition = mul(mul(input.Position, skinTransform), World);
     float4 viewPosition = mul(worldPosition, View);
     output.Position = mul(viewPosition, Projection);
 
@@ -84,13 +85,26 @@ VertexShaderOutput VertexShaderFunction(VertexShaderInput input)
     color += saturate(dot(L3, normal)) / L3distance * Light3Color;
 	
     output.Color = float4(color, 1);
+	output.Pos1 = output.Position;
 
     return output;
 }
 
 float4 PixelShaderFunction(VertexShaderOutput input) : COLOR0
 {
-    return input.Color * tex2D(Sampler, input.TexCoord) * float4(Gain, 1);
+    // Compute a value that ranges from -1 to 1, where -1 is the bottom of 
+	// the screen and 1 is the top.
+	float y = input.Pos1.y / input.Pos1.w;   
+	
+	// (y - Slime) > 0 above the slime line. The * 5 makes the line faded rather
+	// than a hard line.  
+	float sy = saturate((y - Slime) * 5);
+
+	// Compute the slime color
+	float slime = sy * float4(0.4, 1.0, 0.4, 1) + (1 - sy) * float4(1, 1, 1, 1);
+
+	// Output color multiplied by the slime color
+    return input.Color * tex2D(Sampler, input.TexCoord) * slime;
 }
 
 technique Technique1
