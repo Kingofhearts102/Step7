@@ -162,7 +162,7 @@ namespace PrisonStep
                 Update(0);
                 return player;
             }
-            ;
+            
             player = null;
 
             AnimationClips clips = model.Tag as AnimationClips;
@@ -178,7 +178,7 @@ namespace PrisonStep
         {
             
 
-            if (clip != null)
+            if (player != null)
             {
                 // Update the clip
                 player.Update(delta);

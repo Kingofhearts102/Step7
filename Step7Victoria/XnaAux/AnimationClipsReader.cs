@@ -14,7 +14,7 @@ namespace XnaAux
 
             // Determine how many clips there are.
             int clipCnt = input.ReadInt32();
-            clips.SkelToBone = input.ReadObject<List<int>>();
+            //clips.SkelToBone = input.ReadObject<List<int>>();
             for (int c = 0; c < clipCnt; c++)
             {
                 // Create a clip and load  it up
@@ -49,7 +49,7 @@ namespace XnaAux
                 
                 clips.Clips[clip.Name] = clip;
             }
-
+            clips.SkelToBone = input.ReadObject<List<int>>();
             return clips;
         }
     }

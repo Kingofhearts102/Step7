@@ -15,7 +15,7 @@ namespace AnimationPipeline
         {
             
             output.Write(clips.Clips.Count);
-            output.WriteObject(clips.SkelToBone);
+            //output.WriteObject(clips.SkelToBone);
             foreach (KeyValuePair<string, AnimationClips.Clip> clipItem in clips.Clips)
             {
                 AnimationClips.Clip clip = clipItem.Value;
@@ -36,7 +36,7 @@ namespace AnimationPipeline
                 }
                 
             }
-            
+            output.WriteObject(clips.SkelToBone);
 
         }
 

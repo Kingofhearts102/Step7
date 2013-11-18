@@ -165,7 +165,7 @@ namespace PrisonStep
                 regions[mesh.Name] = triangles;
             }
 
-            AnimationPlayer player = victoria.PlayClip("walk");
+            AnimationPlayer player = victoria.PlayClip("dance");
         }
 
         private string TestRegion(Vector3 v3)
